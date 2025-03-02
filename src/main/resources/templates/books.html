@@ -1,8 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="fragments/general :: head('Books List')"></head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:hx-on="http://www.w3.org/1999/xhtml">
+<head th:insert="~{fragments/general :: head('Books List')}"></head>
 <body>
-<div th:insert="fragments/general :: header"></div>
+<div th:insert="~{fragments/general :: header}"></div>
 <p>Books list</p>
-<div th:insert="fragments/general :: footer"></div>
+<div id="book-details">
+    <p th:text="${book.name}">Default book name</p>
+    <p th:text="${book.numOfPages}">100</p>
+</div>
+<form hx-post="/books" hx-target="#book-details" hx-on::after-request="this.reset()">
+    <label>
+        <input type="text" placeholder="Book name" name="name"/>
+    </label>
+    <label>
+        <input type="text" placeholder="Book pages" name="pages"/>
+    </label>
+    <button type="submit" class="btn btn-primary">
+        Submit
+        <img class="htmx-indicator" th:src="@{/svg-loaders/oval.svg}" width="20" height="20" alt="Loading..."
+             src="../static/svg-loaders/oval.svg"/>
+    </button>
+</form>
+<div th:insert="~{fragments/general :: footer}"></div>
 </body>
