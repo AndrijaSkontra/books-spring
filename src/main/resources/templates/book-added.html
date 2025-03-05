@@ -1,4 +1,26 @@
-<div id="book-details" xmlns:th="http://www.w3.org/1999/xhtml">
-    <p th:text="${book.name}">Default book name</p>
-    <p th:text="${book.numOfPages}">100</p>
+<div id="book-details" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:hx-on="http://www.w3.org/1999/xhtml"
+     th:fragment="book-form">
+    <div>
+        <p th:text="${book.name}">Default book name</p>
+        <p th:text="${book.numOfPages}">100</p>
+    </div>
+
+    <form hx-post="/books" hx-target="#book-details" hx-on::after-request="this.reset()">
+        <label>
+            <input type="text" placeholder="Book name" name="name"/>
+            <span th:if="${error.nameError != null}" th:text="${error.nameError}">Invalid Book Name</span>
+        </label>
+        <br/>
+        <label>
+            <input type="text" placeholder="Book pages" name="pages"/>
+            <span th:if="${error.numOfPagesError != null}"
+                  th:text="${error.numOfPagesError}">Invalid Pages Input</span>
+        </label>
+        <br/>
+        <button type="submit" class="btn btn-primary">
+            Submit
+            <img class="htmx-indicator" th:src="@{/svg-loaders/oval.svg}" width="20" height="20" alt="Loading..."
+                 src="../static/svg-loaders/oval.svg"/>
+        </button>
+    </form>
 </div>

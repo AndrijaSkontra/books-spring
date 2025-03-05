@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import skontra.book_cloud.domain.Book;
 import skontra.book_cloud.domain.BookError;
+import skontra.book_cloud.exceptions.InvalidInputException;
 
 @Slf4j
 @Controller
@@ -30,15 +31,22 @@ public class BookController {
     private ModelAndView bookAdded(@RequestParam("name") String name, @RequestParam("pages") String numOfPages) throws InterruptedException {
         ModelAndView mav = new ModelAndView("book-added");
         try {
-            mav.addObject("book", new Book(name, Integer.parseInt(numOfPages)));
+            if (name.isEmpty()) {
+                throw new InvalidInputException("Please input the name!");
+            }
+            var numOfPagesStr = Integer.parseInt(numOfPages);
+            mav.addObject("book", new Book(name, numOfPagesStr));
         } catch (NumberFormatException ex) {
             var bookError = new BookError();
-            bookError.setNameError("Invalid Book Name");
             bookError.setNumOfPagesError("Invalid Pages Inserted");
-            // fixme: this doesn't work because im returning the error object onto the book-added,
-            // but I need the error in the book.html
             mav.addObject("error", bookError);
-            mav.addObject("book", new Book("", 0));
+            mav.addObject("book", new Book(name, 0));
+        } catch (InvalidInputException ex) {
+            var bookError = new BookError();
+            bookError.setNameError("Invalid Book Name");
+            mav.addObject("error", bookError);
+            var numOfPagesStr = Integer.parseInt(numOfPages);
+            mav.addObject("book", new Book("Invalid Name", numOfPagesStr));
         }
         Thread.sleep(1000); // simulate a slow database
         return mav;
