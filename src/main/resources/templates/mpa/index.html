@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/general :: head('Books Cloud')}"></head>
+<body>
+<div th:insert="~{fragments/general :: header}"></div>
+<form action="/books" method="get" id="add-book-form">
+    <label for="search">Search:</label>
+    <input id="search" name="q" type="text" th:value="${param.q}" placeholder="Search term">
+    <button type="submit">Search</button>
+</form>
+<div id="book-table">
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Author</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.name}">Default Row</td>
+            <td th:text="${book.author}">1000</td>
+            <td>
+                <a th:href="@{/book/{id}(id=${book.id})}">Details</a>
+                <a th:href="@{/book/{id}/edit(id=${book.id})}">Edit</a>
+            </td>
+        </tr>
+    </table>
+    <a th:href="@{/book/add}">Add</a>
+</div>
+<div th:insert="~{fragments/general :: footer}"></div>
+</body>

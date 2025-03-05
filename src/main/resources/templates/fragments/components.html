@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<div id="book-table" th:fragment="book-table">
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Pages</th>
+        </tr>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.name}">Default Row</td>
+            <td th:text="${book.numOfPages}">1000</td>
+        </tr>
+    </table>
+</div>

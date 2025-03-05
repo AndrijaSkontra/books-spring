@@ -4,6 +4,7 @@
 <body>
 <div th:insert="~{fragments/general :: header}"></div>
 <p>Landing page</p>
-<a th:href="@{/books}" href="/templates/books.html">List Books</a>
+<!--<a th:href="@{/books}" href="/templates/books.html">List Books</a>-->
+<div th:insert="~{fragments/components :: book-table}"></div>
 <div th:insert="~{fragments/general :: footer}"></div>
 </body>
